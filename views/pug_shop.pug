@@ -1,0 +1,11 @@
+extends layouts/pug_page-layout
+block content
+    h1 Shop
+    div
+        a(href="/admin/add-product") Add product
+    if products.length > 0
+        each product in products
+            ul
+                li #{product.title}
+    else
+        h2 No products available.
