@@ -2,10 +2,10 @@
   "name": "nodejs-app",
   "version": "1.0.0",
   "description": "Node js app example",
-  "main": "app2.js",
+  "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon app2.js"
+    "start": "nodemon app.js"
   },
   "author": "Andrei Shekhau",
   "license": "MIT",
@@ -15,8 +15,6 @@
   "dependencies": {
     "body-parser": "^1.19.0",
     "ejs": "^2.7.1",
-    "express": "^4.17.1",
-    "express-handlebars": "^3.1.0",
-    "pug": "^2.0.4"
+    "express": "^4.17.1"
   }
 }
