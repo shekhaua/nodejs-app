@@ -5,8 +5,10 @@ const rootDir = require('../utils/path');
 const pathToProducts = path.join(rootDir, 'data', 'products.json');
 
 module.exports = class Product {
-  constructor(t) {
-    this.title = t;
+  constructor(title, description, imageUrl) {
+    this.title = title;
+    this.description = description;
+    this.imageUrl = imageUrl;
   }
 
   save() {

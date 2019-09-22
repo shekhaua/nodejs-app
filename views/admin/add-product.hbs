@@ -1,0 +1,38 @@
+<ol class="breadcrumb">
+    <!-- <li class="breadcrumb-item">
+         <a href="/admin">Admin</a>
+     </li>-->
+    <li class="breadcrumb-item active">Products</li>
+    <li class="breadcrumb-item active">Add</li>
+</ol>
+
+<div class="card mx-auto mt-5">
+    <div class="card-header">Add product</div>
+    <div class="card-body">
+        <form action='/admin/post-product' method='POST'>
+            <div class="form-group">
+                <div class="form-row">
+                    <div class="col-md-6">
+                        <div class="form-label-group">
+                            <input type="text" name='title' id="productTitle" class="form-control" placeholder="Title" required="required" autofocus="autofocus">
+                            <label for="productTitle">Title</label>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-label-group">
+                            <input type="text" name='description' id="description" class="form-control" placeholder="Description" required="required">
+                            <label for="description">Description</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="form-label-group">
+                    <input type="text" name='imageUrl' id="imageUrl" class="form-control" placeholder="Image Url">
+                    <label for="inputEmail">Image Url</label>
+                </div>
+            </div>
+            <button class="btn btn-primary btn-block" type='submit'>Submit</button>
+        </form>
+    </div>
+</div>

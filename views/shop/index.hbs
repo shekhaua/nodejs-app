@@ -1,0 +1,30 @@
+<ol class="breadcrumb">
+    <!-- <li class="breadcrumb-item">
+         <a href="/admin">Admin</a>
+     </li>-->
+    <li class="breadcrumb-item active">Shop</li>
+    <li class="breadcrumb-item active">Products</li>
+</ol>
+{{#if showProducts}}
+    <div class="row">
+        {{#each products}}
+            <div class="col-xl-3 col-sm-6 mb-3">
+                <div class="card">
+                    {{#if this.imageUrl}}
+                        <img src="{{this.imageUrl}}" class="card-img-top" alt="...">
+                    {{else}}
+                        <i class="fab fa-product-hunt"
+                           style="font-size: 110px;text-align: center;margin: 10px;"></i>
+                    {{/if}}
+                    <div class="card-body">
+                        <h5 class="card-title">{{this.title}}</h5>
+                        <p class="card-text">{{this.description}}</p>
+                        <!--<a href="#" class="btn btn-primary">Go somewhere</a>-->
+                    </div>
+                </div>
+            </div>
+        {{/each}}
+    </div>
+{{else}}
+    <h2>No products available.</h2>
+{{/if}}
