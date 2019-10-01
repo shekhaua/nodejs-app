@@ -7,32 +7,39 @@ const getProductsOverview = (req, res/*, next*/) => {
 };
 
 const getAddProduct = (req, res/*, next*/) => {
-  Product.fetchAll().then((products) => {
-    res.render('admin/add-product', {docTitle: 'Add product', products, showProducts: products.length});
-  });
+  res.render('admin/add-edit-product', {docTitle: 'Add product', action: 'Add', product: {}, method: 'POST'});
 };
 
-const postProduct = (req, res/*, next*/) => {
-  if(req.body.title) {
-    const {title, description, imageUrl} = req.body;
-    const p = new Product(title, description, imageUrl);
+const actOnProduct = (req, res/*, next*/) => {
+  const {id, title, description, imageUrl, price, _method} = req.body;
+  const p = new Product(id, title, description, imageUrl, price);
+
+  if(_method === 'POST') {
     p.save();
+    res.redirect('/admin/add-product');
+  } else if(_method === 'PUT') {
+    p.update();
+    res.redirect('/admin/products-overview');
   }
-  res.redirect('/admin/add-product');
 };
 
 const getEditProduct = (req, res) => {
-  res.render('admin/edit-product')
+  Product.fetchProductById(req.params.productId).then((product) => {
+    console.log('PROD', product);
+    res.render('admin/add-edit-product', {docTitle: 'Edit product', action: 'Edit', product, method: 'PUT'})
+  });
 };
 
 const getDeleteProduct = (req, res) => {
-  res.render('admin/delete-product')
+  Product.deleteProduct(req.params.productId).then(() => {
+    res.redirect('/admin/products-overview');
+  });
 };
 
 module.exports = {
   getProductsOverview,
   getAddProduct,
-  postProduct,
   getEditProduct,
-  getDeleteProduct
+  getDeleteProduct,
+  actOnProduct
 };

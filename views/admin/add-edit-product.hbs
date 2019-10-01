@@ -1,0 +1,52 @@
+<ol class="breadcrumb">
+    <!-- <li class="breadcrumb-item">
+         <a href="/admin">Admin</a>
+     </li>-->
+    <li class="breadcrumb-item active">Products</li>
+    <li class="breadcrumb-item active">{{action}}</li>
+</ol>
+
+<div class="card mx-auto mt-5">
+    <div class="card-header">{{action}} product</div>
+    <div class="card-body">
+        {{#product}}
+        <form action='/admin/act-on-product' method='POST'>
+            <div class="form-group">
+                <div class="form-row">
+                    <div class="col-md-6">
+                        <div class="form-label-group">
+
+                            <input type="text" name='title' id="productTitle" class="form-control" placeholder="Title"
+                                   required="required" autofocus="autofocus" value="{{title}}">
+
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-label-group">
+                            <input type="number" name='price' id="price" class="form-control" placeholder="Price"
+                                   required="required" value="{{price}}">
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <div class="form-group">
+                <div class="form-row">
+                    <label for="description">Description</label>
+                    <textarea name='description' class="form-control" id="description" rows="3"
+                              required="required">{{description}}</textarea>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="form-label-group">
+                    <input type="text" name='imageUrl' id="imageUrl" class="form-control" placeholder="Image Url"
+                           value="{{imageUrl}}">
+                </div>
+            </div>
+            <input type="hidden" name="id" value="{{id}}">
+            <input type="hidden" name="_method" value="{{../method}}">
+            <button class="btn btn-primary btn-block" type='submit'>Submit</button>
+        </form>
+        {{/product}}
+    </div>
+</div>

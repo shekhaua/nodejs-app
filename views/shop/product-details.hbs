@@ -1,6 +1,6 @@
 <ol class="breadcrumb">
-    <li class="breadcrumb-item active">Shop</li>
-    <li class="breadcrumb-item active">Products</li>
+    <li class="breadcrumb-item active">Product</li>
+    <li class="breadcrumb-item active">Details</li>
 </ol>
 {{#if showProducts}}
     <div class="row">
@@ -17,19 +17,14 @@
                            style="font-size: 110px;text-align: center;margin: 10px;"></i>
                     {{/if}}
                     <div class="card-body">
-                        <!--<h5 class="card-title">{{this.title}}</h5>-->
                         <p class="card-text">{{this.description}}</p>
                         <p class="card-text"><small class="text-muted">{{this.price}} Euro</small></p>
-                        <a href="/product/{{this.id}}" class="btn btn-outline-info">Details</a>
-                        <form action="/add-to-cart" method="POST" style="display: inline-block">
-                            <input type="hidden" name="productId" value="{{this.id}}">
-                            <button class="btn btn-primary" type="submit">Add to cart</button>
-                        </form>
+                        <a href="/" class="btn btn-primary">Add to cart</a>
                     </div>
                 </div>
             </div>
         {{/each}}
     </div>
 {{else}}
-    <h2>No products available.</h2>
+    <h2>This product is not available.</h2>
 {{/if}}
