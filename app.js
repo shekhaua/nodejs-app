@@ -3,6 +3,15 @@ const bodyParser = require('body-parser');
 const path = require('path');
 const handlebars = require('express-handlebars');
 
+
+
+const db = require('./utils/mysql-database');
+db.execute('SELECT * FROM nodejs_training.products').then((resp) => {
+  console.log(resp)
+}).catch((error) => {
+  console.log(error)
+});
+
 // routes
 const admin = require('./routes/admin');
 const shopRoutes = require('./routes/shop');
@@ -28,6 +37,8 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/admin', admin.router);
 app.use(shopRoutes);
 app.use('/', getPageNotFound);
+
+
 
 // start server
 app.listen(3001);
