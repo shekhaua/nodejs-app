@@ -12,7 +12,7 @@ module.exports = class Cart {
   }
 
   static removeCartItem(productId) {
-    cartItems[productId] = undefined;
+    delete cartItems[productId];
   }
 
   static getCartItems() {

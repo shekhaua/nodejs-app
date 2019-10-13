@@ -1,13 +1,17 @@
 const express = require('express');
 const router = express.Router();
 
-const {getProductsOverview, getAddProduct, actOnProduct, getEditProduct,
-  getDeleteProduct} = require('../controllers/products');
+const {renderProducts, renderAddProduct, doAddProduct, doEditProduct, renderEditProduct,
+  doDeleteProduct} = require('../controllers/products');
 
-router.get('/products-overview', getProductsOverview);
-router.get('/add-product', getAddProduct);
-router.post('/act-on-product', actOnProduct);
-router.get('/edit-product/:productId', getEditProduct);
-router.get('/delete-product/:productId', getDeleteProduct);
+const BASE_PATH = '/admin';
 
-module.exports.router = router;
+router.get(`${BASE_PATH}/products`, renderProducts);
+router.get(`${BASE_PATH}/products/add`, renderAddProduct);
+router.get(`${BASE_PATH}/products/edit/:productId`, renderEditProduct);
+
+router.post(`${BASE_PATH}/act-on-product`, doAddProduct);
+router.put(`${BASE_PATH}/act-on-product`, doEditProduct);
+router.delete(`${BASE_PATH}/product/:productId`, doDeleteProduct);
+
+module.exports = router;

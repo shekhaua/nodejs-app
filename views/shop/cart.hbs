@@ -17,16 +17,29 @@
                            style="font-size: 110px;text-align: center;margin: 10px;"></i>
                     {{/if}}
                     <div class="card-body">
-                        <p class="card-text">{{this.description}}</p>
-                        <p class="card-text"><small class="text-muted">Price: {{this.price}} Euro</small></p>
-                        <p class="card-text"><small class="text-muted">Total: {{this.priceSumm}} Euro</small></p>
-                        <p class="card-text"><small class="text-muted">Quantity: {{this.quantity}} </small></p>
+                        <form action="/cart/{{this.id}}" method="post">
+                            <p class="card-text">{{this.description}}</p>
+                            <p class="card-text"><small class="text-muted">Price: {{this.price}} Euro</small></p>
+                            <p class="card-text"><small class="text-muted">Total: {{this.priceSumm}} Euro</small></p>
+                            <p class="card-text"><small class="text-muted">Quantity: {{this.quantity}} </small></p>
+                            <input type="hidden" name="_method" value="DELETE">
+                            <button type="submit" class="btn btn-outline-danger">Delete from cart</button>
+                        </form>
                     </div>
                 </div>
             </div>
         {{/each}}
     </div>
-    <h4>Total price: {{totalPrice}}</h4>
+    <div class="row">
+        <div class="col-xl-6 col-sm-6 mb-3">
+            <h4>Total price: {{totalPrice}}</h4>
+        </div>
+        <div class="col-xl-6 col-sm-6 mb-3">
+            <form action="/order" method="post" style="float: right">
+                <button type="submit" class="btn btn-primary">Place order</button>
+            </form>
+        </div>
+    </div>
 {{else}}
     <h2>Your cart is empty.</h2>
 {{/if}}

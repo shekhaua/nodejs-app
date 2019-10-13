@@ -17,9 +17,11 @@
                            style="font-size: 110px;text-align: center;margin: 10px;"></i>
                     {{/if}}
                     <div class="card-body">
-                        <p class="card-text">{{this.description}}</p>
-                        <p class="card-text"><small class="text-muted">{{this.price}} Euro</small></p>
-                        <a href="/" class="btn btn-primary">Add to cart</a>
+                        <form action="/cart/{{this.id}}" method="POST">
+                            <p class="card-text">{{this.description}}</p>
+                            <p class="card-text"><small class="text-muted">{{this.price}} Euro</small></p>
+                            <button class="btn btn-primary">Add to cart</button>
+                        </form>
                     </div>
                 </div>
             </div>

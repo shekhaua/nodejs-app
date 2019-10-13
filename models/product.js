@@ -1,79 +1,71 @@
-const fs = require('fs');
-const path = require('path');
+const {Model, DataTypes, Op} = require('sequelize');
+const sequelize = require('../utils/mysql-database');
+const {logSuccess, handleError } = require('../utils/response-handlers');
 
-const rootDir = require('../utils/path');
-const pathToProducts = path.join(rootDir, 'data', 'products.json');
+class Product extends Model {}
 
-function writeToFile(products) {
-  fs.writeFile(pathToProducts, JSON.stringify(products), (error) => {
-    if(!error) {
-      console.log('Products updated');
-      return;
-    }
-    console.log('Error while updating products');
-  });
+Product.init({
+  id: {
+    type: DataTypes.INTEGER,
+    autoIncrement: true,
+    allowNull: false,
+    primaryKey: true
+  },
+  title: DataTypes.STRING,
+  price: {
+    type: DataTypes.DOUBLE,
+    allowNull: false
+  },
+  imageUrl: {
+    type: DataTypes.STRING,
+    allowNull: true,
+  },
+  description: {
+    type: DataTypes.STRING,
+    allowNull: false
+  }
+}, { sequelize, modelName: 'product'});
+
+function create(product) {
+  return Product.create(product).then(logSuccess()).catch(handleError);
+}
+/*
+* Reads single product
+* Reads All products
+* Reads, multiple products by array of ids
+* */
+function read (id) {
+  if(Array.isArray(id)) {
+    if (!id.length) { return Promise.resolve([]); }
+
+    return Product.findAll({ where: {
+      id: { [Op.or]: id }
+    }}).then(logSuccess(`Products ${JSON.stringify(id)} fetched`)).then((resp) => {
+      return resp;
+    }).catch(handleError);
+  }
+  if (id) {
+    return Product.findByPk(id).then(logSuccess(`Products ${id} fetched`)).catch(handleError);
+  }
+  return Product.findAll().then(logSuccess('Products fetch all')).catch(handleError);
 }
 
-module.exports = class Product {
-  constructor(id = null, title, description, imageUrl, price) {
-    this.id = id;
-    this.title = title;
-    this.description = description;
-    this.imageUrl = imageUrl;
-    this.price = price;
-  }
+function update(product) {
+  return Product.update(product, { where:
+      { id: product.id }
+  }).then(logSuccess(`Product ${product.id} updated`)).catch(handleError);
+}
 
-  save() {
-    // read stored products
-    return this.constructor.fetchAll().then((products) => {
-      // store product
-      this.id = Math.random().toString();
-      products.push(this);
-      // update products file
-      writeToFile(products);
-    });
-  }
+function del(id) {
+  return Product.destroy({ where:
+      { id: id }
+  }).then(logSuccess(`Product ${id} deleted`)).catch(handleError);
+}
 
-  update(){
-    // read stored products
-    return this.constructor.fetchAll().then((products) => {
-      const idx = products.findIndex(p => p.id === this.id);
-      // store product
-      products[idx] = this;
-      // update products file
-      writeToFile(products);
-    });
-  }
-
-  static fetchAll() {
-    return new Promise((resolve, reject) => {
-      fs.readFile(pathToProducts, (error, fileContent) => {
-        if(!error) {
-          resolve(JSON.parse(fileContent));
-          return;
-        }
-        resolve([])
-      });
-    });
-  }
-
-  static fetchProductsByIds(ids) {
-    return this.fetchAll().then((products) => {
-      return products.filter((p) => {
-        return (ids.findIndex(id => id === p.id) >= 0);
-      });
-    });
-  }
-
-  static fetchProductById(id) {
-    return this.fetchProductsByIds([id]);
-  }
-
-  static deleteProduct(id) {
-    return this.fetchAll().then((products) => {
-      const idx = products.findIndex(p => p.id === id);
-      products.splice(idx, 1);
-      writeToFile(products);
-    });
-  }
+module.exports = {
+  instance: Product,
+  create,
+  read,
+  update,
+  del
 };

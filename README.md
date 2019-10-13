@@ -3,6 +3,7 @@ Node js application that evolves.
 - mvc
 - bootstrap
 - msql
+- sequelize
 
 What can be enhanced.
 - handlebars partials
