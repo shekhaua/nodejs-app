@@ -3,8 +3,8 @@ const bodyParser = require('body-parser');
 const path = require('path');
 const handlebars = require('express-handlebars');
 const {handleError} = require('./utils/response-handlers');
-const sequelize = require('./utils/mysql-database');
 const methodOverride = require('method-override');
+
 
 // routes
 const adminRoutes = require('./routes/admin');
@@ -41,45 +41,10 @@ app.set('view engine', 'hbs');
 app.set('views', path.join(__dirname, '/views'));
 app.use(express.static(path.join(__dirname, 'public')));
 
-// user handling
-app.use((req, res, next) => {
-  user.findByPk(1).then((usr) => {
-    req.user = usr;
-    next();
-  }).catch(handleError);
-});
-
 // routes configuration
 app.use(adminRoutes);
 app.use(shopRoutes);
 app.use('/', getPageNotFound);
 
-// initialize database
-const Product  = require('./models/product');
-const User = require('./models/user');
-const Order = require('./models/order');
-
-const {instance: product} = Product;
-const {instance: user} = User;
-const {instance: order} = Order;
-
-product.belongsTo(user, {constraints: true, onDelete: 'CASCADE', as: 'creator' });
-user.hasMany(product, {foreignKey: 'creatorId'});
-
-product.belongsToMany(user, {through: order});
-user.belongsToMany(product, {through: order});
-
-
-sequelize.sync(/*{force: true}*/).then(() => {
-  return user.findByPk(1).then((usr) => {
-    if(!usr) {
-      return user.create({name: 'Andrei Shekhau', username: 'Ander', email: 'test@test.com'})
-    } else {
-      return usr;
-    }
-  });
-}).then(() => {
-  // start server
-  app.listen(3001);
-}).catch(handleError);
-
+// start server
+app.listen(3001);

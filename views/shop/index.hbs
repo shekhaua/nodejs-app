@@ -17,11 +17,11 @@
                            style="font-size: 110px;text-align: center;margin: 10px;"></i>
                     {{/if}}
                     <div class="card-body">
-                        <form action="/cart/{{this.id}}" method="POST">
+                        <form action="/cart/{{this._id}}" method="POST">
                             <!--<h5 class="card-title">{{this.title}}</h5>-->
                             <p class="card-text">{{this.description}}</p>
                             <p class="card-text"><small class="text-muted">{{this.price}} Euro</small></p>
-                            <a href="/product/{{this.id}}" class="btn btn-outline-info">Details</a>
+                            <a href="/product/{{this._id}}" class="btn btn-outline-info">Details</a>
                             <button class="btn btn-primary" type="submit">Add to cart</button>
                         </form>
                     </div>

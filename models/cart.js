@@ -1,4 +1,4 @@
-const cartItems = {};
+let cartItems = {};
 
 module.exports = class Cart {
 
@@ -25,5 +25,9 @@ module.exports = class Cart {
 
   static getQuantityByItemId(id) {
     return cartItems[id].quantity;
+  }
+
+  static clear() {
+    cartItems = {};
   }
 };

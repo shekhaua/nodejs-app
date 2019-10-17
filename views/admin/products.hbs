@@ -20,11 +20,11 @@
                            style="font-size: 110px;text-align: center;margin: 10px;"></i>
                     {{/if}}
                     <div class="card-body">
-                        <form action="/admin/product/{{this.id}}" method="POST">
+                        <form action="/admin/product/{{this._id}}" method="POST">
                             <!--<h5 class="card-title">{{this.title}}</h5>-->
                             <p class="card-text">{{this.description}}</p>
                             <p class="card-text"><small class="text-muted">{{this.price}} Euro</small></p>
-                            <a href="/admin/products/edit/{{this.id}}" class="btn btn-outline-secondary">Edit</a>
+                            <a href="/admin/products/edit/{{this._id}}" class="btn btn-outline-secondary">Edit</a>
                             <input type="hidden" name="_method" value="DELETE">
                             <button class="btn btn-danger" type='submit'>Delete</button>
                         </form>

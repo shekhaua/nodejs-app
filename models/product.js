@@ -1,71 +1,41 @@
-const {Model, DataTypes, Op} = require('sequelize');
-const sequelize = require('../utils/mysql-database');
+const {ObjectId} = require('mongodb');
+const {getDb, fetchCollectionItems} = require('../utils/database');
 const {logSuccess, handleError } = require('../utils/response-handlers');
 
-class Product extends Model {}
-
-Product.init({
-  id: {
-    type: DataTypes.INTEGER,
-    autoIncrement: true,
-    allowNull: false,
-    primaryKey: true
-  },
-  title: DataTypes.STRING,
-  price: {
-    type: DataTypes.DOUBLE,
-    allowNull: false
-  },
-  imageUrl: {
-    type: DataTypes.STRING,
-    allowNull: true,
-  },
-  description: {
-    type: DataTypes.STRING,
-    allowNull: false
+class Product {
+  constructor(title, price, imageUrl, description) {
+    this.title = title;
+    this.price = price;
+    this.imageUrl = imageUrl;
+    this.description = description;
   }
-}, { sequelize, modelName: 'product'});
 
-function create(product) {
-  return Product.create(product).then(logSuccess()).catch(handleError);
-}
-/*
-* Reads single product
-* Reads All products
-* Reads, multiple products by array of ids
-* */
-function read (id) {
-  if(Array.isArray(id)) {
-    if (!id.length) { return Promise.resolve([]); }
-
-    return Product.findAll({ where: {
-      id: { [Op.or]: id }
-    }}).then(logSuccess(`Products ${JSON.stringify(id)} fetched`)).then((resp) => {
-      return resp;
-    }).catch(handleError);
+  create () {
+    const db = getDb();
+    return db.collection('products').insertOne(this).then(logSuccess).catch(handleError);
   }
-  if (id) {
-    return Product.findByPk(id).then(logSuccess(`Products ${id} fetched`)).catch(handleError);
+  /*
+  * Reads single product
+  * Reads All products
+  * Reads, multiple products by array of ids
+  * */
+  static read (id) {
+    return fetchCollectionItems('products', id);
   }
-  return Product.findAll().then(logSuccess('Products fetch all')).catch(handleError);
+
+  static update(product) {
+    const db = getDb();
+    const {id} = product;
+    delete product.id;
+    return db.collection('products').updateOne({_id: new ObjectId(id)},{$set: product})
+      .then(logSuccess(`Product ${id} updated`)).catch(handleError);
+  }
+
+  static del(id) {
+    const db = getDb();
+    return db.collection('products').deleteOne({_id: new ObjectId(id)})
+      .then(logSuccess(`Product ${id} deleted`)).catch(handleError);
+  }
 }
 
-function update(product) {
-  return Product.update(product, { where:
-      { id: product.id }
-  }).then(logSuccess(`Product ${product.id} updated`)).catch(handleError);
-}
-
-function del(id) {
-  return Product.destroy({ where:
-      { id: id }
-  }).then(logSuccess(`Product ${id} deleted`)).catch(handleError);
-}
-
-module.exports = {
-  instance: Product,
-  create,
-  read,
-  update,
-  del
-};
+module.exports = Product;

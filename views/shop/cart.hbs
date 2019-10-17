@@ -17,7 +17,7 @@
                            style="font-size: 110px;text-align: center;margin: 10px;"></i>
                     {{/if}}
                     <div class="card-body">
-                        <form action="/cart/{{this.id}}" method="post">
+                        <form action="/cart/{{this._id}}" method="post">
                             <p class="card-text">{{this.description}}</p>
                             <p class="card-text"><small class="text-muted">Price: {{this.price}} Euro</small></p>
                             <p class="card-text"><small class="text-muted">Total: {{this.priceSumm}} Euro</small></p>
