@@ -4,6 +4,7 @@ const path = require('path');
 const handlebars = require('express-handlebars');
 const {handleError} = require('./utils/response-handlers');
 const methodOverride = require('method-override');
+const User = require('./models/user');
 
 
 // routes
@@ -40,6 +41,21 @@ app.use(methodOverride(function(req, res){
 app.set('view engine', 'hbs');
 app.set('views', path.join(__dirname, '/views'));
 app.use(express.static(path.join(__dirname, 'public')));
+app.use((req, res, next) => {
+  User.read().then((users) => {
+    if(!users.length) {
+      const user = new User(null, 'Andrei', 'Ander', 'andrei.shekhau@gmail.com');
+      return user.create().then((result) => {
+        const userId = result.insertedId.toString();
+        return User.read(userId);
+      });
+    }
+    return users[0];
+  }).then((user) => {
+    req.user = user;
+    next();
+  });
+});
 
 // routes configuration
 app.use(adminRoutes);

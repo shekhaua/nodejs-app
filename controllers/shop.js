@@ -46,7 +46,7 @@ const deleteFromCart = (req, res) => {
 
 const createOrder = (req, res) => {
   getCartItems().then(({cartItems}) => {
-    const order = new Order(cartItems);
+    const order = new Order(cartItems, req.user._id);
     order.create().then((resp) => {
       Cart.clear();
       res.render('shop/order-success', {orderId: resp.insertedId});

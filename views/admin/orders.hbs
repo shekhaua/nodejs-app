@@ -51,6 +51,9 @@
                                     <th class="sorting" tabindex="0" aria-controls="dataTable" rowspan="1" colspan="1" aria-label="Start date: activate to sort column ascending" style="width: 65px;">
                                         Quantity
                                     </th>
+                                    <th class="sorting" tabindex="0" aria-controls="dataTable" rowspan="1" colspan="1" aria-label="User info: activate to sort column ascending" style="width: 65px;">
+                                        User info
+                                    </th>
                                     <th class="sorting" tabindex="0" aria-controls="dataTable" rowspan="1" colspan="1" aria-label="Salary: activate to sort column ascending" style="width: 65px;">
                                         Total
                                     </th>
@@ -63,6 +66,7 @@
                                     <th rowspan="1" colspan="1">Product description</th>
                                     <th rowspan="1" colspan="1">Price</th>
                                     <th rowspan="1" colspan="1">Quantity</th>
+                                    <th rowspan="1" colspan="1">User info</th>
                                     <th rowspan="1" colspan="1">Total</th>
                                 </tr>
                             </tfoot>
@@ -70,10 +74,11 @@
                             {{#each orders}}
                                 <tr role="row" class="odd">
                                     <td class="sorting_1">{{this._id}}</td>
-                                    <td>{{this.title}}</td>
-                                    <td>{{this.description}}</td>
-                                    <td>{{this.price}}</td>
-                                    <td>{{this.quantity}}</td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td>{{this.user.name}} <br/> {{this.user.email}}</td>
                                     <td>{{this.totalPrice}}</td>
                                 </tr>
                                 {{#each this.cartItems}}
@@ -83,6 +88,7 @@
                                         <td>{{this.description}}</td>
                                         <td>{{this.price}}</td>
                                         <td>{{this.quantity}}</td>
+                                        <td></td>
                                         <td></td>
                                     </tr>
                                 {{/each}}

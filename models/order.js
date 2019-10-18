@@ -1,10 +1,12 @@
+const {ObjectId} = require('mongodb');
 const {getDb, fetchCollectionItems} = require('../utils/database');
 const {logSuccess, handleError } = require('../utils/response-handlers');
 
 class Order {
-  constructor(cartItems) {
+  constructor(cartItems, userId) {
     this.cartItems = cartItems;
     this.totalPrice = this.constructor.getTotalPrice(cartItems);
+    this.userId = userId;
   }
 
   static getTotalPrice(cartItems = []) {
@@ -14,14 +16,18 @@ class Order {
   }
 
   create() {
-    return getDb().collection('orders').insertOne(this).then(logSuccess('Create order', 'ops')).catch(handleError);
+    const db = getDb();
+    const {userId, ...cartInfo} = this;
+    return db.collection('users').findOne({_id: new ObjectId(this.userId)}).then((user) => {
+      return db.collection('orders').insertOne({...cartInfo, user});
+    }).then(logSuccess('Create order', 'ops')).catch(handleError);
   }
 
   static read(id) {
     return fetchCollectionItems('orders', id);
   }
 
-  static update() {
+  update() {
 
   }
 

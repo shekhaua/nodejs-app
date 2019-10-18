@@ -22,7 +22,7 @@ const renderEditProduct = (req, res) => {
 
 const doAddProduct = (req, res) => {
   const {title, price, imageUrl, description} = req.body;
-  const product = new Product(title, price, imageUrl, description);
+  const product = new Product(null, title, price, imageUrl, description);
   product.create().then(() => {
     res.redirect('/admin/products');
   });
@@ -37,7 +37,8 @@ const doAddProduct = (req, res) => {
 
 const doEditProduct = (req, res) => {
   const {id, title, description, imageUrl, price} = req.body;
-  Product.update({id, title, description, imageUrl, price}).then(() => {
+  const product = new Product(id, title, price, imageUrl, description);
+  product.update().then(() => {
     res.redirect('/admin/products');
   });
   /*const {user: User} = req;

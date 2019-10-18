@@ -3,7 +3,8 @@ const {getDb, fetchCollectionItems} = require('../utils/database');
 const {logSuccess, handleError } = require('../utils/response-handlers');
 
 class Product {
-  constructor(title, price, imageUrl, description) {
+  constructor(id, title, price, imageUrl, description) {
+    this._id = id? new ObjectId(id): null;
     this.title = title;
     this.price = price;
     this.imageUrl = imageUrl;
@@ -23,12 +24,10 @@ class Product {
     return fetchCollectionItems('products', id);
   }
 
-  static update(product) {
+  update() {
     const db = getDb();
-    const {id} = product;
-    delete product.id;
-    return db.collection('products').updateOne({_id: new ObjectId(id)},{$set: product})
-      .then(logSuccess(`Product ${id} updated`)).catch(handleError);
+    return db.collection('products').updateOne({_id: this._id}, {$set: this})
+      .then(logSuccess(`Product ${id} updated`, 'result')).catch(handleError);
   }
 
   static del(id) {

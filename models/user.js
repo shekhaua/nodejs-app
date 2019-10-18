@@ -1,41 +1,29 @@
-const {Model, DataTypes} = require('sequelize');
-const sequelize = require('../utils/mysql-database');
+const {ObjectId} = require('mongodb');
+const {getDb, fetchCollectionItems} = require('../utils/database');
 const {logSuccess, handleError } = require('../utils/response-handlers');
 
-class User extends Model {}
+class User {
+  constructor(id, name, userName, email ) {
+    this._id = id? new ObjectId(id) : null;
+    this.name = name;
+    this.userName = userName;
+    this.email = email;
+  }
 
-User.init({
-  id: {
-    type: DataTypes.INTEGER,
-    autoIncrement: true,
-    allowNull: false,
-    primaryKey: true
-  },
-  name: DataTypes.STRING,
-  username: DataTypes.STRING,
-  email: DataTypes.STRING,
-}, { sequelize, modelName: 'user'});
+  create() {
+    const db = getDb();
+    return db.collection('users').insertOne(this).then(logSuccess('User create')).catch(handleError);
+  }
 
-function create (user) {
-  User.create(user).then(logSuccess).catch(handleError);
+  static read(id) {
+    return fetchCollectionItems('users', id).then(logSuccess('User fetch'), handleError)
+  }
+
+  update() {
+
+  }
+
+  del() {}
 }
 
-function read () {
-
-}
-
-function update() {
-
-}
-
-function del() {
-
-}
-
-module.exports = {
-  instance: User,
-  create,
-  read,
-  update,
-  del
-};
+module.exports = User;
